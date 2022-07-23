@@ -1,0 +1,73 @@
+<html>
+    <p>So far you have rolled:</p>
+    <ul id="list"></ul>
+    <button id="button_roll">Roll the dice</button>
+    <p>Total: <span id="total">0</span>. <span id="info">Keep playing!</span></p>
+    <button id="button_remove">Remove the last roll</button>
+    <button id="button_restart">Start again</button>
+  <script>
+    var dice, rolls, Sum, item;
+
+    function randomInt(n) {
+      // Return a random number from in [0, n[
+      return Math.floor(Math.random()*n);
+    }
+
+    function randomMember(arr) {
+      // Return a random member of the array
+      return arr[randomInt(arr.length)]
+    }
+
+    // Describe this function...
+    function display_the_rolls() {
+      if(--window.LoopTrap <= 0) throw "Infinite loop.";
+      let element_list = document.getElementById('list');
+      element_list.replaceChildren();
+      rolls.forEach((item) => {
+        let new_li = document.createElement('li');
+        new_li.innerText = item;
+
+        element_list.appendChild(new_li);
+      });
+      let element_total = document.getElementById('total');
+      Sum = rolls.reduce((a,b) => a+b, 0);
+      element_total.innerText = Sum;
+      let element_info = document.getElementById('info');
+      if (Sum == 11) {
+        element_info.innerText = 'You won 🏆';
+        let new_img = document.createElement('img');
+        new_img.setAttribute("href", 'https://giphy.com/gifs/winner-good-job-trophy-9xt1MUZqkneFiWrAAD');
+
+        element_info.appendChild(new_img);
+      } else if (Sum > 11) {
+        element_info.innerText = 'You lost 👎';
+      } else {
+        element_info.innerText = 'Keep playing!';
+      }
+    }
+
+
+    dice = [1, 2, 3, 4, 5, 6];
+    rolls = [];
+    display_the_rolls();
+
+
+    document.getElementById('button_restart').addEventListener('click', (event) => {
+      rolls = [];
+      display_the_rolls();
+
+    });
+
+    document.getElementById('button_roll').addEventListener('click', (event) => {
+      rolls.push(randomMember(dice));
+      display_the_rolls();
+
+    });
+
+    document.getElementById('button_remove').addEventListener('click', (event) => {
+      rolls.pop();
+      display_the_rolls();
+
+    });
+  </script>
+</html>
